@@ -3,7 +3,8 @@
 * https://github.com/ytdl-org/youtube-dl/blob/master/README.md#embedding-youtube-dl
   - https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/soundcloud.py
 * https://soundcloud.com/essentialmixrepost
-* Mutagen / Eyed3
+* Mutagen - https://mutagen.readthedocs.io/en/latest/user/gettingstarted.html
+* Eyed3 - https://eyed3.readthedocs.io/en/latest/modules.html
 
 In:  Chaos In The CBD - Essential Mix 2020-03-21
 Out:
@@ -24,3 +25,5 @@ Out:
   - validate date gap > 1 week?
 1. Write ID3 data <>
 1. Change filename <>
+
+https://docs.python-guide.org/writing/structure/
