@@ -6,6 +6,8 @@
 * Mutagen - https://mutagen.readthedocs.io/en/latest/user/gettingstarted.html
 * Eyed3 - https://eyed3.readthedocs.io/en/latest/modules.html
 
+
+Spec:
 In:  Chaos In The CBD - Essential Mix 2020-03-21
 Out:
   Title:        %YYYY% - %artist% Essential Mix
@@ -15,7 +17,7 @@ Out:
   Track#:       Sequential (might be difficult)
   Filename:     [YYYY-MM-DD] Radio 1's Essential Mix - %artist%
 
-
+Full Feature:
 1. Check Soundcloud for tracks
 1. Load up list of existing tracks
 1. See if there's new ones / exclude old ones
@@ -26,4 +28,9 @@ Out:
 1. Write ID3 data <>
 1. Change filename <>
 
-https://docs.python-guide.org/writing/structure/
+
+MVP:
+* Hit Soundcloud link, download limit 1
+* Extract info from file info (or from download)
+* update ID3 tags
+* Change filename

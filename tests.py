@@ -5,6 +5,11 @@ https://docs.python.org/3/library/unittest.html
 import random
 import unittest
 
+# Import context without requiring package installation
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 class TestSequenceFunctions(unittest.TestCase):
     """ This is one of potentially many TestCases """
