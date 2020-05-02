@@ -25,7 +25,7 @@ def archive(args):
 
 def progressHook(data):
     if data["status"] == "finished":
-        print("Finished downloading")
+        print("Finished downloading, at " + data["filename"])
 
 
 # TBD whether this ends up needed
@@ -44,4 +44,5 @@ opt_flags = {
     "logger": logShim(),
     "progress_hooks": [progressHook],
     "restrictfilenames": True,
+    "outtmpl": "%(title)s.%(ext)s",
 }

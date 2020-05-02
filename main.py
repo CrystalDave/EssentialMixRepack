@@ -12,6 +12,7 @@ import argparse
 import logging
 import logzero
 from logzero import logger
+import os
 import essentialmix_repack as repack
 
 
@@ -21,6 +22,12 @@ def main(args):
         logger.info("Debug args: " + str(vars(args)))
     else:
         logzero.loglevel(logging.ERROR)
+
+    if not os.path.isdir(args.dir):
+        os.makedirs(args.dir)
+        logger.info("Creating directory: " + args.dir)
+    os.chdir(args.dir)
+
     repack.archive(args)
 
 
@@ -31,6 +38,15 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--simulate", action="store_true", default=False)
     parser.add_argument(
         "-n", "--limit", action="store", dest="limit", type=int, default=1
+    )
+
+    parser.add_argument(
+        "-d",
+        "--dir",
+        dest="dir",
+        type=str,
+        default="./output/",
+        help="Directory to save to",
     )
 
     parser.add_argument(
