@@ -11,6 +11,18 @@ import youtube_dl
 archiveAccount = "https://soundcloud.com/essentialmixrepost"
 
 
+# TBD: Args object vs. explicit params?
+def archive(args):
+    opt_flags["verbose"] = args.debug
+    opt_flags["simulate"] = args.simulate
+    opt_flags["playlistend"] = args.limit
+    with youtube_dl.YoutubeDL(opt_flags) as ydl:
+        # Two different ways to download, one surfaces title info but ignores progressHook?
+        ydl.download([archiveAccount])
+        # info_dict = ydl.extract_info(archiveAccount, opt_flags["simulate"])
+        # print(info_dict.get("title", None))
+
+
 def progressHook(data):
     if data["status"] == "finished":
         print("Finished downloading")
@@ -33,11 +45,3 @@ opt_flags = {
     "progress_hooks": [progressHook],
     "restrictfilenames": True,
 }
-
-
-def archive(args):
-    opt_flags["verbose"] = args.debug
-    opt_flags["simulate"] = args.simulate
-    opt_flags["playlistend"] = args.limit
-    with youtube_dl.YoutubeDL(opt_flags) as ydl:
-        ydl.download([archiveAccount])
