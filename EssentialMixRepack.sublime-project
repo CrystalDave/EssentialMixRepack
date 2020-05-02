@@ -4,5 +4,8 @@
 		{
 			"path": "."
 		}
-	]
+	],
+  "settings": {
+    "sublack.black_on_save": true
+  }
 }

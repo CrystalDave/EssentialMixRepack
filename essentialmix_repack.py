@@ -10,9 +10,11 @@ import youtube_dl
 
 archiveAccount = "https://soundcloud.com/essentialmixrepost"
 
+
 def progressHook(data):
-    if data['status'] == 'finished':
+    if data["status"] == "finished":
         print("Finished downloading")
+
 
 # TBD whether this ends up needed
 class logShim(object):
@@ -25,14 +27,17 @@ class logShim(object):
     def error(self, msg):
         logger.error(msg)
 
+
 opt_flags = {
-    'logger': logShim(),
-    'progress_hooks': [progressHook]
+    "logger": logShim(),
+    "progress_hooks": [progressHook],
+    "restrictfilenames": True,
 }
 
+
 def archive(args):
-    opt_flags['verbose'] = args.debug
-    opt_flags['simulate'] = args.simulate
-    opt_flags['playlistend'] = args.limit
+    opt_flags["verbose"] = args.debug
+    opt_flags["simulate"] = args.simulate
+    opt_flags["playlistend"] = args.limit
     with youtube_dl.YoutubeDL(opt_flags) as ydl:
         ydl.download([archiveAccount])

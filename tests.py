@@ -8,7 +8,8 @@ import unittest
 # Import context without requiring package installation
 import os
 import sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
 class TestSequenceFunctions(unittest.TestCase):
@@ -39,5 +40,5 @@ class TestSequenceFunctions(unittest.TestCase):
             self.assertTrue(element in self.seq)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

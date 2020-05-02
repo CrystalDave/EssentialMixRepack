@@ -16,7 +16,7 @@ import essentialmix_repack as repack
 
 
 def main(args):
-    if(args.debug):
+    if args.debug:
         logzero.loglevel(logging.INFO)
         logger.info("Debug args: " + str(vars(args)))
     else:
@@ -29,12 +29,15 @@ if __name__ == "__main__":
 
     parser.add_argument("-d", "--debug", action="store_true", default=False)
     parser.add_argument("-s", "--simulate", action="store_true", default=False)
-    parser.add_argument("-n", "--limit", action="store", dest="limit", type=int, default=1)
+    parser.add_argument(
+        "-n", "--limit", action="store", dest="limit", type=int, default=1
+    )
 
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s (version {version})".format(version=__version__))
+        version="%(prog)s (version {version})".format(version=__version__),
+    )
 
     args = parser.parse_args()
     main(args)
