@@ -1,12 +1,5 @@
 # Essential Mix intake script
 
-* https://github.com/ytdl-org/youtube-dl/blob/master/README.md#embedding-youtube-dl
-  - https://github.com/ytdl-org/youtube-dl/blob/master/youtube_dl/extractor/soundcloud.py
-* https://soundcloud.com/essentialmixrepost
-* Mutagen - https://mutagen.readthedocs.io/en/latest/user/gettingstarted.html
-* Eyed3 - https://eyed3.readthedocs.io/en/latest/modules.html
-
-
 Spec:
 In:  Chaos In The CBD - Essential Mix 2020-03-21
 Out:
@@ -18,15 +11,20 @@ Out:
   Filename:     [YYYY-MM-DD] Radio 1's Essential Mix - %artist%
 
 Full Feature:
-1. Check Soundcloud for tracks
-1. Load up list of existing tracks
-1. See if there's new ones / exclude old ones
+* Check Soundcloud for tracks
+* Load up list of existing tracks
+* See if there's new ones / exclude old ones
   - Archive.txt?
-1. Download new ones
-1. Split file title into Artist, Date; validate
-  - validate date gap > 1 week?
-1. Write ID3 data <>
-1. Change filename <>
+* Download new ones
+* Parse title as possible
+* Check against Wikipedia list for fuzzy match?
+  * https://en.wikipedia.org/w/api.php?action=parse&prop=sections&page=List_of_Essential_Mix_episodes&format=json&section=1&prop=wikitext
+  * https://github.com/bcicen/wikitables
+  * https://github.com/5j9/wikitextparser
+* Write ID3 data <>
+  * Mutagen - https://mutagen.readthedocs.io/en/latest/user/gettingstarted.html
+  * Eyed3 - https://eyed3.readthedocs.io/en/latest/modules.html
+* Change filename <>
 
 
 MVP:
@@ -34,3 +32,9 @@ MVP:
 * Extract info from file info (or from download)
 * update ID3 tags
 * Change filename
+
+Input issues:
+* Could be missing a track (archive mode)
+* Some entries don't have a date in title
+  * There is a timestamp though, is upload date next-best-item?
+* What about previous years?
