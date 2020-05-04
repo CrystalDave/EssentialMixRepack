@@ -1,9 +1,6 @@
 """
-This file demonstrates common uses for the Python unittest module
-https://docs.python.org/3/library/unittest.html
+Test cases for EssentialMix Repack
 """
-import random
-import unittest
 
 # Import context without requiring package installation
 import os
@@ -11,33 +8,38 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import unittest
+import essentialmix_repack as repack
 
-class TestSequenceFunctions(unittest.TestCase):
-    """ This is one of potentially many TestCases """
+
+class TestTitleExtract(unittest.TestCase):
+    """ Title extraction is currently brittle, so we can use known cases """
 
     def setUp(self):
-        self.seq = list(range(10))
+        pass
 
-    def test_shuffle(self):
-        """ make sure the shuffled sequence does not lose any elements """
-        random.shuffle(self.seq)
-        self.seq.sort()
-        self.assertEqual(self.seq, list(range(10)))
+    def test_happypath(self):
+        """ make sure the happy path extracts artist and date"""
+        expectedResult = {"artist": "Chaos in the CBD", "date": "2020-03-21"}
+        result = repack.extractTitleData("Chaos in the CBD - Essential Mix 2020-03-21")
 
-        # should raise an exception for an immutable sequence
-        self.assertRaises(TypeError, random.shuffle, (1, 2, 3))
+        self.assertDictEqual(result, expectedResult)
 
-    def test_choice(self):
-        """ test a choice """
-        element = random.choice(self.seq)
-        self.assertTrue(element in self.seq)
-
-    def test_sample(self):
-        """ test that an exception is raised """
-        with self.assertRaises(ValueError):
-            random.sample(self.seq, 20)
-        for element in random.sample(self.seq, 5):
-            self.assertTrue(element in self.seq)
+    def test_fallbackpath(self):
+        """ make sure the fallback path extracts artist"""
+        testStrings = [
+            "Seb Wildwood - BBC Radio 1 Essential Mix",
+            "Dimension Essential Mix - BBC Radio 1",
+            "Maya Jane Coles - Live @ Ants Ushuaia Ibiza 2019 [Essential Mix]",
+        ]
+        expectedResults = [
+            {"artist": "Seb Wildwood", "date": None},
+            {"artist": "Dimension", "date": None},
+            {"artist": "Maya Jane Coles", "date": None},
+        ]
+        for n, test in enumerate(testStrings):
+            result = repack.extractTitleData(test)
+            self.assertDictEqual(result, expectedResults[n])
 
 
 if __name__ == "__main__":

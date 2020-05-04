@@ -7,6 +7,7 @@ in a format of my preference
 import datetime
 import logzero
 from logzero import logger
+import re
 import youtube_dl
 
 archiveAccount = "https://soundcloud.com/essentialmixrepost"
@@ -24,29 +25,35 @@ def archive(args):
         # Two different ways to download, one surfaces title info but ignores progressHook?
         info_dict = ydl.extract_info(archiveAccount, False)
         for entry in info_dict.get("entries"):
-            title = entry.get("title")
+            titleData = extractTitleData(entry.get("title"))
             timestamp = datetime.date.fromtimestamp(entry.get("timestamp"))
-            artist = extractTitleData(title)
-            print("Entry: " + artist + " - " + str(timestamp))
         ydl.download([archiveAccount])
 
 
-"""
-    Problem: No guaranteed consistency of title.
-    Most common:
-        * Chaos in the CBD - Essential Mix 2020-03-21
-    Complications:
-        * Seb Wildwood - BBC Radio 1 Essential Mix
-        * Dimension Essential Mix - BBC Radio 1
-        * TNGHT ESSENTIAL MIX 2019
-        * rezz essential mix
-        * Maya Jane Coles - Live @ Ants Ushuaia Ibiza 2019 [Essential Mix]
-"""
-
-
 def extractTitleData(title):
-    artist, _, rest = title.partition(" - ")
-    return artist
+    """
+        Problem: No guaranteed consistency of title.
+        Most common:
+            * Chaos in the CBD - Essential Mix 2020-03-21
+        Complications:
+            * Seb Wildwood - BBC Radio 1 Essential Mix
+            * Dimension Essential Mix - BBC Radio 1
+            * TNGHT ESSENTIAL MIX 2019
+            * rezz essential mix
+            * Maya Jane Coles - Live @ Ants Ushuaia Ibiza 2019 [Essential Mix]
+        This is going to be brittle (unless I figure out something better)
+    """
+    happyPath = re.compile("(?P<artist>.+?) - Essential Mix (?P<date>\d+-\d+-\d+)")
+    result = {"artist": None, "date": None}
+    if happyPath.match(title):
+        # Validate date?
+        result = happyPath.match(title).groupdict()
+    elif "-" in title:
+        # A rough guess fallback for now, will break on hyphen in artist name
+        # TBD: Case sensitivity
+        artist, _, _ = title.partition(" -")
+        result["artist"] = artist.partition(" BBC")[0].partition(" Essential")[0]
+    return result
 
 
 def progressHook(data):
