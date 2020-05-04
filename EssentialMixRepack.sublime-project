@@ -2,8 +2,9 @@
 	"folders":
 	[
 		{
-			"path": "."
-		}
+			"path": ".",
+      "folder_exclude_patterns": ["venv", "__pycache__"]
+		},
 	],
   "settings": {
     "sublack.black_on_save": true
