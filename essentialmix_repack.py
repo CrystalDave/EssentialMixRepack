@@ -34,13 +34,15 @@ def extractTitleData(title):
     """
         Problem: No guaranteed consistency of title.
         Most common:
-            * Chaos in the CBD - Essential Mix 2020-03-21
+            [x] Carista - Essential Mix 2020-03-21
         Complications:
-            * Seb Wildwood - BBC Radio 1 Essential Mix
-            * Dimension Essential Mix - BBC Radio 1
-            * TNGHT ESSENTIAL MIX 2019
-            * rezz essential mix
-            * Maya Jane Coles - Live @ Ants Ushuaia Ibiza 2019 [Essential Mix]
+            [x] Seb Wildwood - BBC Radio 1 Essential Mix
+            [x] Dimension Essential Mix - BBC Radio 1
+            [ ] TNGHT ESSENTIAL MIX 2019
+            [ ] rezz essential mix
+            [x] Maya Jane Coles - Live @ Ants Ushuaia Ibiza 2019 [Essential Mix]
+            [ ] Kasra | Essential Mix | BBC Radio 1 | 20.07.2019
+            [ ] BBC Radio 1 Essential Mix (15/06/19) (Missing, check post data?)
         This is going to be brittle (unless I figure out something better)
     """
     happyPath = re.compile("(?P<artist>.+?) - Essential Mix (?P<date>\d+-\d+-\d+)")

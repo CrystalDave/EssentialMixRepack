@@ -20,10 +20,17 @@ class TestTitleExtract(unittest.TestCase):
 
     def test_happypath(self):
         """ make sure the happy path extracts artist and date"""
-        expectedResult = {"artist": "Chaos in the CBD", "date": "2020-03-21"}
-        result = repack.extractTitleData("Chaos in the CBD - Essential Mix 2020-03-21")
-
-        self.assertDictEqual(result, expectedResult)
+        testStrings = [
+            "Carista - Essential Mix 2020-02-08",
+            "Kölsch - Essential Mix 2018-12-22",
+        ]
+        expectedResults = [
+            {"artist": "Carista", "date": "2020-02-08"},
+            {"artist": "Kölsch", "date": "2018-12-22"},
+        ]
+        for n, test in enumerate(testStrings):
+            result = repack.extractTitleData(test)
+            self.assertDictEqual(result, expectedResults[n])
 
     def test_fallbackpath(self):
         """ make sure the fallback path extracts artist"""
