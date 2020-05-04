@@ -7,6 +7,7 @@
 		},
 	],
   "settings": {
-    "sublack.black_on_save": true
+    "sublack.black_on_save": true,
+    "SublimeLinter-addon-black-for-flake.enable": true
   }
 }

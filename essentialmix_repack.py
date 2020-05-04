@@ -45,7 +45,7 @@ def extractTitleData(title):
             [ ] BBC Radio 1 Essential Mix (15/06/19) (Missing, check post data?)
         This is going to be brittle (unless I figure out something better)
     """
-    happyPath = re.compile("(?P<artist>.+?) - Essential Mix (?P<date>\d+-\d+-\d+)")
+    happyPath = re.compile(r"(?P<artist>.+?) - Essential Mix (?P<date>\d+-\d+-\d+)")
     result = {"artist": None, "date": None}
     if happyPath.match(title):
         # Validate date?
