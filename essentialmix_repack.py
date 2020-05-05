@@ -16,12 +16,30 @@ albumTemplate = "{year} - BBC Essential Mixes"
 albumArtist = "BBC {year}"
 trackTitle = "{year} - {artist} Essential Mix"
 
+opt_flags = {
+    "format": "bestaudio/best",
+    "logger": logShim(),
+    "progress_hooks": [progressHook],
+    # "restrictfilenames": True,
+    "outtmpl": "%(title)s.%(ext)s",
+}
+
 
 def archive(args):
     """Core archival logic, split out to sub-functions as they make sense"""
     opt_flags["verbose"] = args.debug
     opt_flags["simulate"] = args.simulate
     opt_flags["playlistend"] = args.limit
+
+    downloadInfo()
+
+    # Figure out if there's a better way to update outtmpl inside context manager
+    with youtube_dl.YoutubeDL(opt_flags) as ydl:
+        ydl.download([archiveAccount])
+
+
+def downloadInfo():
+    """Download info **about** track, but don't download the track yet"""
     with youtube_dl.YoutubeDL(opt_flags) as ydl:
         # Two different ways to download, one surfaces title info but ignores progressHook?
         info_dict = ydl.extract_info(archiveAccount, False)
@@ -31,9 +49,6 @@ def archive(args):
             if titleData["date"] is None:
                 titleData["date"] = str(timestamp)
             opt_flags["outtmpl"] = finalFilename.format(**titleData)
-    # Figure out if there's a better way to update outtmpl
-    with youtube_dl.YoutubeDL(opt_flags) as ydl:
-        ydl.download([archiveAccount])
 
 
 def extractTitleData(title):
@@ -79,12 +94,3 @@ class logShim(object):
 
     def error(self, msg):
         logger.error(msg)
-
-
-opt_flags = {
-    "format": "bestaudio/best",
-    "logger": logShim(),
-    "progress_hooks": [progressHook],
-    # "restrictfilenames": True,
-    "outtmpl": "%(title)s.%(ext)s",
-}
