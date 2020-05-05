@@ -27,9 +27,9 @@ class TestTitleExtract(unittest.TestCase):
             {"artist": "Carista", "date": "2020-02-08"},
             {"artist": "Kölsch", "date": "2018-12-22"},
         ]
-        for n, test in enumerate(testStrings):
+        for test, answer in zip(testStrings, expectedResults):
             result = repack.extractTitleData(test)
-            self.assertDictEqual(result, expectedResults[n])
+            self.assertDictEqual(result, answer)
 
     def test_fallbackpath(self):
         """ make sure the fallback path extracts artist"""
@@ -43,9 +43,9 @@ class TestTitleExtract(unittest.TestCase):
             {"artist": "Dimension", "date": None},
             {"artist": "Maya Jane Coles", "date": None},
         ]
-        for n, test in enumerate(testStrings):
+        for test, answer in zip(testStrings, expectedResults):
             result = repack.extractTitleData(test)
-            self.assertDictEqual(result, expectedResults[n])
+            self.assertDictEqual(result, answer)
 
 
 if __name__ == "__main__":
