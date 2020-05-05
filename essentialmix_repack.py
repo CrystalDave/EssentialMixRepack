@@ -11,13 +11,14 @@ import re
 import youtube_dl
 
 archiveAccount = "https://soundcloud.com/essentialmixrepost"
-finalFilename = "[%(date)s] Radio 1's Essential Mix - %(artist)s.%(ext)s"
-albumTemplate = "%(year)s - BBC Essential Mixes"
-albumArtist = "BBC %(year)s"
-trackTitle = "%(year)s - %(artist)s Essential Mix"
+finalFilename = "[{date}] Radio 1's Essential Mix - {artist}.%(ext)s"
+albumTemplate = "{year} - BBC Essential Mixes"
+albumArtist = "BBC {year}"
+trackTitle = "{year} - {artist} Essential Mix"
 
-# TBD: Args object vs. explicit params?
+
 def archive(args):
+    """Core archival logic, split out to sub-functions as they make sense"""
     opt_flags["verbose"] = args.debug
     opt_flags["simulate"] = args.simulate
     opt_flags["playlistend"] = args.limit
@@ -27,6 +28,11 @@ def archive(args):
         for entry in info_dict.get("entries"):
             titleData = extractTitleData(entry.get("title"))
             timestamp = datetime.date.fromtimestamp(entry.get("timestamp"))
+            if titleData["date"] is None:
+                titleData["date"] = str(timestamp)
+            opt_flags["outtmpl"] = finalFilename.format(**titleData)
+    # Figure out if there's a better way to update outtmpl
+    with youtube_dl.YoutubeDL(opt_flags) as ydl:
         ydl.download([archiveAccount])
 
 
@@ -42,7 +48,7 @@ def extractTitleData(title):
             [ ] rezz essential mix
             [x] Maya Jane Coles - Live @ Ants Ushuaia Ibiza 2019 [Essential Mix]
             [ ] Kasra | Essential Mix | BBC Radio 1 | 20.07.2019
-            [ ] BBC Radio 1 Essential Mix (15/06/19) (Missing, check post data?)
+            [ ] BBC Radio 1 Essential Mix (15/06/19) (Missing, check post data for artist?)
         This is going to be brittle (unless I figure out something better)
     """
     happyPath = re.compile(r"(?P<artist>.+?) - Essential Mix (?P<date>\d+-\d+-\d+)")
