@@ -20,7 +20,6 @@ opt_flags = {
     "format": "bestaudio/best",
     "logger": logShim(),
     "progress_hooks": [progressHook],
-    # "restrictfilenames": True,
     "outtmpl": "%(title)s.%(ext)s",
 }
 
@@ -30,10 +29,7 @@ def archive(args):
     opt_flags["verbose"] = args.debug
     opt_flags["simulate"] = args.simulate
     opt_flags["playlistend"] = args.limit
-
     downloadInfo()
-
-    # Figure out if there's a better way to update outtmpl inside context manager
     with youtube_dl.YoutubeDL(opt_flags) as ydl:
         ydl.download([archiveAccount])
 
@@ -45,9 +41,13 @@ def downloadInfo():
         info_dict = ydl.extract_info(archiveAccount, False)
         for entry in info_dict.get("entries"):
             titleData = extractTitleData(entry.get("title"))
-            timestamp = datetime.date.fromtimestamp(entry.get("timestamp"))
             if titleData["date"] is None:
+                # Fallback to upload date
+                timestamp = datetime.date.fromtimestamp(entry.get("timestamp"))
                 titleData["date"] = str(timestamp)
+            if titleData["artist"] is None:
+                # Fallback to uploader
+                titleData["artist"] = entry.get("uploader")
             opt_flags["outtmpl"] = finalFilename.format(**titleData)
 
 
