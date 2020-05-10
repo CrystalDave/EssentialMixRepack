@@ -16,6 +16,23 @@ albumTemplate = "{year} - BBC Essential Mixes"
 albumArtist = "BBC {year}"
 trackTitle = "{year} - {artist} Essential Mix"
 
+# TBD whether this ends up needed
+class logShim(object):
+    def debug(self, msg):
+        logger.info(msg)
+
+    def warning(self, msg):
+        logger.warn(msg)
+
+    def error(self, msg):
+        logger.error(msg)
+
+
+def progressHook(data):
+    if data["status"] == "finished":
+        print("Finished downloading, at " + data["filename"])
+
+
 opt_flags = {
     "format": "bestaudio/best",
     "logger": logShim(),
@@ -77,20 +94,3 @@ def extractTitleData(title):
         artist, _, _ = title.partition(" -")
         result["artist"] = artist.partition(" BBC")[0].partition(" Essential")[0]
     return result
-
-
-def progressHook(data):
-    if data["status"] == "finished":
-        print("Finished downloading, at " + data["filename"])
-
-
-# TBD whether this ends up needed
-class logShim(object):
-    def debug(self, msg):
-        logger.info(msg)
-
-    def warning(self, msg):
-        logger.warn(msg)
-
-    def error(self, msg):
-        logger.error(msg)
